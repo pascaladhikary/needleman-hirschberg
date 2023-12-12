@@ -14,31 +14,31 @@ std::pair<string, string> align_sequences(
     int n = s1.size(), m = s2.size();
     std::vector<std::vector<int> > dp(n + 1, std::vector<int>(m + 1, 0));
     for (int i = 0; i <= n; i++) {
-    dp[i][0] = i*gap_cost;
+        dp[i][0] = i*gap_cost;
     }
     for (int j = 0; j <= m; j++) {
-    dp[0][j] = j*gap_cost;
+        
     }
     for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= m; j++) {
-        dp[i][j] = (s1[i - 1] == s2[j - 1]) ? dp[i - 1][j - 1] : std::min(
-            dp[i - 1][j - 1] + sub_cost,
-            std::min(dp[i - 1][j], dp[i][j - 1]) + gap_cost);
-    }
+        for (int j = 1; j <= m; j++) {
+            dp[i][j] = (s1[i - 1] == s2[j - 1]) ? dp[i - 1][j - 1] : std::min(
+                dp[i - 1][j - 1] + sub_cost,
+                std::min(dp[i - 1][j], dp[i][j - 1]) + gap_cost);
+        }
     }
     string res1, res2;
     int i = n, j = m;
     while (i > 0 && j > 0) {
-    if (s1[i - 1] == s2[j - 1] || dp[i][j] == dp[i - 1][j - 1] + sub_cost) {
-        res1 += s1[--i];
-        res2 += s2[--j];
-    } else if (dp[i][j] == dp[i - 1][j] + gap_cost) {
-        res1 += s1[--i];
-        res2 += '-';
-    } else if (dp[i][j] == dp[i][j - 1] + gap_cost) {
-        res1 += '-';
-        res2 += s2[--j];
-    }
+        if (s1[i - 1] == s2[j - 1] || dp[i][j] == dp[i - 1][j - 1] + sub_cost) {
+            res1 += s1[--i];
+            res2 += s2[--j];
+        } else if (dp[i][j] == dp[i - 1][j] + gap_cost) {
+            res1 += s1[--i];
+            res2 += '-';
+        } else if (dp[i][j] == dp[i][j - 1] + gap_cost) {
+            res1 += '-';
+            res2 += s2[--j];
+        }
     }
     while (i > 0 || j > 0) {
     res1 += (i > 0) ? s1[--i] : '-';
@@ -54,13 +54,13 @@ std::vector<int> row_cost(It lo1, It hi1, It lo2, It hi2,
                           int gap_cost, int sub_cost) {
   std::vector<int> res(std::distance(lo2, hi2) + 1), prev(res);
     for (It it1 = lo1; it1 != hi1; ++it1) {
-    res.swap(prev);
-    int i = 0;
-    for (It it2 = lo2; it2 != hi2; ++it2) {
-        res[i + 1] = (*it1 == *it2) ? prev[i] : std::min(prev[i] + sub_cost,
-                                                        res[i] + gap_cost);
-        i++;
-    }
+        res.swap(prev);
+        int i = 0;
+        for (It it2 = lo2; it2 != hi2; ++it2) {
+            res[i + 1] = (*it1 == *it2) ? prev[i] : std::min(prev[i] + sub_cost,
+                                                            res[i] + gap_cost);
+            i++;
+            }
     }
     return res;
 }
@@ -80,12 +80,12 @@ void hirschberg_rec(It lo1, It hi1, It lo2, It hi2,
         It pos = std::find(lo2, hi2, *lo1);
         bool insert = (pos == hi2) && (gap_cost*(hi2 - lo2 + 1) < sub_cost);
         if (lo2 == hi2 || insert) {
-        *res1 += *lo1;
-        *res2 += '-';
+            *res1 += *lo1;
+            *res2 += '-';
         }
         for (It it2 = lo2; it2 != hi2; ++it2) {
-        *res1 += (pos == it2 || (!insert && it2 == lo2)) ? *lo1 : '-';
-        *res2 += *it2;
+            *res1 += (pos == it2 || (!insert && it2 == lo2)) ? *lo1 : '-';
+            *res2 += *it2;
         }
         return;
     }
@@ -99,8 +99,8 @@ void hirschberg_rec(It lo1, It hi1, It lo2, It hi2,
     int mincost = -1;
     for (int i = 0, j = (int)rev.size() - 1; i < (int)fwd.size(); i++, j--) {
         if (mincost < 0 || fwd[i] + rev[j] < mincost) {
-        mincost = fwd[i] + rev[j];
-        mid2 = lo2 + i;
+            mincost = fwd[i] + rev[j];
+            mid2 = lo2 + i;
         }
     }
 
@@ -111,7 +111,7 @@ void hirschberg_rec(It lo1, It hi1, It lo2, It hi2,
 std::pair<string, string> hirschberg_align_sequences(
     const string &s1, const string &s2, int gap_cost = 1, int sub_cost = 1) {
     if (s1.size() < s2.size()) {
-    return hirschberg_align_sequences(s2, s1, gap_cost, sub_cost);
+        return hirschberg_align_sequences(s2, s1, gap_cost, sub_cost);
     }
     string res1, res2;
     hirschberg_rec(s1.begin(), s1.end(), s2.begin(), s2.end(), &res1, &res2,
