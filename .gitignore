@@ -3,3 +3,4 @@ log.txt
 localAlignment
 test*
 .vscode/
+.DS_Store
