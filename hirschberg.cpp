@@ -14,17 +14,17 @@ std::pair<string, string> align_sequences(
     int n = s1.size(), m = s2.size();
     std::vector<std::vector<int> > dp(n + 1, std::vector<int>(m + 1, 0));
     for (int i = 0; i <= n; i++) {
-        dp[i][0] = i*gap_cost;
+    dp[i][0] = i*gap_cost;
     }
     for (int j = 0; j <= m; j++) {
-        
+    dp[0][j] = j*gap_cost;
     }
     for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= m; j++) {
-            dp[i][j] = (s1[i - 1] == s2[j - 1]) ? dp[i - 1][j - 1] : std::min(
-                dp[i - 1][j - 1] + sub_cost,
-                std::min(dp[i - 1][j], dp[i][j - 1]) + gap_cost);
-        }
+    for (int j = 1; j <= m; j++) {
+        dp[i][j] = (s1[i - 1] == s2[j - 1]) ? dp[i - 1][j - 1] : std::min(
+            dp[i - 1][j - 1] + sub_cost,
+            std::min(dp[i - 1][j], dp[i][j - 1]) + gap_cost);
+    }
     }
     string res1, res2;
     int i = n, j = m;
@@ -41,8 +41,8 @@ std::pair<string, string> align_sequences(
         }
     }
     while (i > 0 || j > 0) {
-    res1 += (i > 0) ? s1[--i] : '-';
-    res2 += (j > 0) ? s2[--j] : '-';
+        res1 += (i > 0) ? s1[--i] : '-';
+        res2 += (j > 0) ? s2[--j] : '-';
     }
     std::reverse(res1.begin(), res1.end());
     std::reverse(res2.begin(), res2.end());
@@ -60,7 +60,7 @@ std::vector<int> row_cost(It lo1, It hi1, It lo2, It hi2,
             res[i + 1] = (*it1 == *it2) ? prev[i] : std::min(prev[i] + sub_cost,
                                                             res[i] + gap_cost);
             i++;
-            }
+        }
     }
     return res;
 }
