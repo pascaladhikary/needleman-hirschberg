@@ -125,12 +125,12 @@ int main() {
     using std::chrono::duration;
     using std::chrono::milliseconds;
 
-    auto t1 = high_resolution_clock::now();
     freopen("input.txt", "r", stdin);
     string A = "";
     string B = "";
     std::cin >> A >> B;
 
+    auto t1 = high_resolution_clock::now();
     std::pair<string, string> f = align_sequences(A, B, 2, 3);
     auto t2 = high_resolution_clock::now();
 
